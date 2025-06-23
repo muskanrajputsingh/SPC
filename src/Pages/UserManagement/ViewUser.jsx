@@ -139,7 +139,7 @@ const ViewUser = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
-              <th>Password</th>
+              {/* <th>Password</th> */}
               <th>Role</th>
               <th>Actions</th>
             </tr>
@@ -187,7 +187,7 @@ const ViewUser = () => {
                     user.phone
                   )}
                 </td>
-                <td>
+                {/* <td>
                   {editingUser === user.id ? (
                     <input
                       type="password"
@@ -199,7 +199,7 @@ const ViewUser = () => {
                   ) : (
                     user.password
                   )}
-                </td>
+                </td> */}
                 <td>
                   {editingUser === user.id ? (
                     <select
