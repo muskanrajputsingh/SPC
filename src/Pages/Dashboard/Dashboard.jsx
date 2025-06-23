@@ -1,4 +1,3 @@
-"use client"
 import "./Dashboard.css"
 
 const Dashboard = ({ darkMode }) => {

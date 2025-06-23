@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react";
 import "./Signup.css";
 import { FaUser, FaLock, FaPhoneAlt } from "react-icons/fa";
