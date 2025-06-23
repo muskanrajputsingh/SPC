@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { postData } from "../../utils/api"
 
 const AddItemM = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const AddItemM = () => {
     description: "",
     imageUrl: "",
     category: "",
+    createdById: "",
   })
 
   const [errors, setErrors] = useState({})
@@ -14,16 +16,9 @@ const AddItemM = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const categories = [
-    "Electronics",
-    "Clothing",
-    "Books",
-    "Home & Garden",
-    "Sports",
-    "Toys",
-    "Food & Beverages",
-    "Health & Beauty",
-    "Automotive",
-    "Other",
+    "Cloth",
+    "Makeup",
+    "Shoes",
   ]
 
   const handleInputChange = (e) => {
@@ -80,35 +75,47 @@ const AddItemM = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) {
-      return
-    }
+  if (!validateForm()) return;
 
-    setIsSubmitting(true)
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form submitted:", formData)
-      setIsSubmitting(false)
-      setSubmitSuccess(true)
-
-      // Reset form after successful submission
-      setFormData({
-        name: "",
-        description: "",
-        imageUrl: "",
-        category: "",
-      })
-
-      // Hide success message after 3 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false)
-      }, 3000)
-    }, 1500)
+  if (!user?.id) {
+    alert("User ID not found. Please login again.");
+    return;
   }
+
+  setIsSubmitting(true);
+
+  try {
+    const payload = {
+      ...formData,
+      imageUrl: [formData.imageUrl],
+      createdById: user.id, 
+    };
+
+    const response = await postData("/marketplace/create", payload);
+
+    console.log("Item created:", response);
+    setSubmitSuccess(true);
+
+    setFormData({
+      name: "",
+      description: "",
+      imageUrl: "",
+      category: "",
+      createdById: "",
+    });
+    setTimeout(() => setSubmitSuccess(false), 3000);
+  } catch (error) {
+    console.error("Error creating item:", error);
+    alert("Failed to add item. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleReset = () => {
     setFormData({
@@ -124,7 +131,7 @@ const AddItemM = () => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Add Details</h1>
+        <h1 style={styles.title}>Add Items</h1>
         <p style={styles.subtitle}>Fill in the information below to add a new item</p>
       </div>
 

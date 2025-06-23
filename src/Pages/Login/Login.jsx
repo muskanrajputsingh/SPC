@@ -1,19 +1,16 @@
 "use client"
 import { useState } from "react";
 import "./Login.css";
-import { FaUser, FaLock, FaPhoneAlt } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { FaCircleUser } from "react-icons/fa6";
 import { postData } from "../../utils/api";
+import { jwtDecode } from "jwt-decode";
 
 
-const Signup = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
-    phone: "",
-    password: "",
-    role: "USER",
+    password: ""
   });
 
   const handleChange = (e) => {
@@ -25,18 +22,33 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
+  e.preventDefault();
+  try {
+    const response = await postData("/users/login", formData);
 
-    try {
-      const response = await postData("/users/create-user", formData);
-      alert(response.message || "Signup successful!");
-      window.location.href = "/dashboard";
-    } catch (error) {
-      console.error("Signup failed:", error);
-      alert("Signup failed. Please try again.");
-    }
-  };
+    const token = response.token?.accessToken || "";
+    const user = response.user || {};
+
+    // Store in localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // ✅ Decode token to get id and email
+    const decoded = jwtDecode(token);
+
+    console.log("Decoded Token:", decoded);
+
+    // You can access id and email like this (if present in your token payload)
+    console.log("User ID:", decoded?.id);
+    console.log("User Email:", decoded?.email);
+
+    alert("Login successful!");
+    window.location.href = "/dashboard";
+  } catch (error) {
+    console.error("Login failed:", error);
+    alert(error?.response?.data?.error || "Login failed. Please try again.");
+  }
+};
 
   return (
     <div className="login-container">
@@ -47,23 +59,12 @@ const Signup = () => {
             alt="Login Illustration"
             className="login-illustration"
           />
-          <a href="#" className="create-account-link">Already have an account?</a>
+          <a href="/signup" className="create-account-link">Don't have an account? Sign Up</a>
         </div>
         <div className="login-form-section">
           <img src="/SPC.png" alt="SPC Logo" className="login-logo" />
-          <h2 className="login-title">Sign Up</h2>
+          <h2 className="login-title">Sign In</h2>
           <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
-              <span className="input-icon"><FaUser /></span>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
             <div className="input-group">
               <span className="input-icon"><MdEmail /></span>
               <input
@@ -75,31 +76,7 @@ const Signup = () => {
                 required
               />
             </div>
-            <div className="input-group">
-              <span className="input-icon"><FaPhoneAlt /></span>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <span className="input-icon"><FaCircleUser /></span>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                required
-              >
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-                <option value="SELLER">Seller</option>
-                <option value="ASSOCIATE">Associate</option>
-              </select>
-            </div>
+
             <div className="input-group">
               <span className="input-icon"><FaLock /></span>
               <input
@@ -112,7 +89,7 @@ const Signup = () => {
               />
             </div>
 
-            <button type="submit" className="login-btn">Sign Up</button>
+            <button type="submit" className="login-btn">Sign In</button>
           </form>
         </div>
       </div>
@@ -120,4 +97,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

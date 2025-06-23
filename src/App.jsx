@@ -10,6 +10,7 @@ import AddItemM from "./pages/MarketPlace/AddItemM"
 import ViewItemM from "./pages/MarketPlace/ViewItemM"
 import AddItemP from "./pages/Property/AddItemP"
 import ViewItemP from "./pages/Property/ViewItemP"
+import Signup from "./Pages/Signup/Signup"
 
 function AppLayout({ darkMode, toggleDarkMode, sidebarOpen, toggleSidebar }) {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Routes>
           {/* Public Route (No sidebar, no header) */}
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup/>} />
 
           {/* Protected Layout */}
           <Route

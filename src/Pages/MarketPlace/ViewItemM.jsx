@@ -4,24 +4,7 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
 const ViewitemM = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      serialNo: 1,
-      name: "John Doe",
-      imageUrl: "",
-      description: "whjd bdwj bhjw dw bdwjbd",
-      category: "Cloth",
-    },
-    {
-      id: 2,
-      serialNo: 2,
-      name: "Jane Smith",
-      imageUrl: "",
-      description: "whjd bdwj bhjw dw bdwjbd",
-      category: "Shoes",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
   const [filteredItem, setFilteredItem] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [editingItem, setEditingItem] = useState(null);
@@ -29,26 +12,26 @@ const ViewitemM = () => {
 
   const category = ["All", "Cloth", "Makeup", "Shoes"];
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  //   fetchUsers();
-  // }, []);
-
-  // const fetchUsers = async () => {
-  //   const res = await fetchDataFromApi("/marketplace/get-all");
-  //   if (res && Array.isArray(res.users)) {
-  //     setUsers(res.users);
-  //   } else {
-  //     console.error("Unexpected API response:", res);
-  //     setUsers([]);
-  //   }
-  // };
-
   useEffect(() => {
-    const filtered =
-      selectedCategory === "All"
-        ? users
-        : users.filter((user) => user.category === selectedCategory);
+    window.scrollTo(0, 0);
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const res = await fetchDataFromApi("/marketplace/get-all");
+    if (res && Array.isArray(res.marketplaces)) {
+    setUsers(res.marketplaces);
+   }else {
+      console.error("Unexpected API response:", res);
+      setUsers([]);
+    }
+  };
+ 
+  useEffect(() => {
+     const filtered = selectedCategory === "All"
+    ? users
+    : users.filter((user) => user.category?.toLowerCase() === selectedCategory.toLowerCase());
+
     setFilteredItem(filtered);
   }, [selectedCategory, users]);
 
@@ -101,7 +84,7 @@ const ViewitemM = () => {
   };
 
   const handleDelete = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
+    if (window.confirm("Are you sure you want to delete this Item?")) {
       try {
         await deleteData(`/marketplace/delete/${userId}`);
         setUsers(users.filter((user) => user.id !== userId));
@@ -174,7 +157,7 @@ const ViewitemM = () => {
                     user.name
                   )}
                 </td>
-                <td>
+               <td>
                   {editingItem === user.id ? (
                     <input
                       type="text"
@@ -184,7 +167,15 @@ const ViewitemM = () => {
                       className="edit-input"
                     />
                   ) : (
-                    user.imageUrl
+                    user.imageUrl?.[0] ? (
+                      <img
+                        src={user.imageUrl[0]}
+                        alt={user.name}
+                        style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "6px" }}
+                      />
+                    ) : (
+                      <span>No image</span>
+                    )
                   )}
                 </td>
                 <td>
