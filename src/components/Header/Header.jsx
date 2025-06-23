@@ -14,7 +14,7 @@ const Header = ({ toggleSidebar, toggleDarkMode, darkMode }) => {
       <div className="header-right">
        
        <div className="login-btn2">
-        <button><Link to="/login"><FaUserPlus/></Link></button>
+        <button><Link to="/signup"><FaUserPlus/></Link></button>
        </div>
       
 
