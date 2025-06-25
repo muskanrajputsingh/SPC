@@ -1,80 +1,134 @@
 import "./Dashboard.css"
+import { useEffect,useState } from "react";
+import { fetchDataFromApi } from "../../utils/api";
 
 const Dashboard = ({ darkMode }) => {
+   const [users, setUsers] = useState([]);
+   const [itemM,setItemM] = useState([])
+   const [itemP,setItemP] = useState([])
+   const [products,setProducts] = useState([]);
+
   const statsData = [
-    {
-      title: "Total Users",
-      value: "2",
-      change: "+20%",
-      trend: "up",
-      icon: "👥",
-      color: "bg-blue-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Orders",
-      value: "0",
-      change: "-11%",
-      trend: "down",
-      icon: "🛒",
-      color: "bg-purple-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Revenue",
-      value: "₹ 0",
-      change: "+25%",
-      trend: "up",
-      icon: "💰",
-      color: "bg-green-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Products",
-      value: "1",
-      change: "+22%",
-      trend: "up",
-      icon: "📦",
-      color: "bg-orange-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Investors",
-      value: "1",
-      change: "-1%",
-      trend: "down",
-      icon: "💼",
-      color: "bg-indigo-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Employees",
-      value: "1",
-      change: "-24%",
-      trend: "down",
-      icon: "👨‍💼",
-      color: "bg-pink-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Expense Records",
-      value: "0",
-      change: "-13%",
-      trend: "down",
-      icon: "📄",
-      color: "bg-red-500",
-      period: "vs. last month",
-    },
-    {
-      title: "Total Help Tickets",
-      value: "0",
-      change: "-31%",
-      trend: "down",
-      icon: "❓",
-      color: "bg-teal-500",
-      period: "vs. last month",
-    },
-  ]
+  {
+    title: "Total Users",
+    key: "users",
+    change: "+20%",
+    trend: "up",
+    icon: "👥",
+    color: "bg-blue-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Properties",
+    key: "itemM",
+    change: "+15%",
+    trend: "up",
+    icon: "🏠",
+    color: "bg-purple-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Marketplace Items",
+    key: "itemP",
+    change: "+8%",
+    trend: "up",
+    icon: "🛍️",
+    color: "bg-green-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Products",
+    value: "₹ 0",
+    change: "+25%",
+    trend: "up",
+    icon: "👗",
+    color: "bg-orange-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Investors",
+    value: "1",
+    change: "-1%",
+    trend: "down",
+    icon: "💼",
+    color: "bg-indigo-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Employees",
+    value: "1",
+    change: "-24%",
+    trend: "down",
+    icon: "👨‍💼",
+    color: "bg-pink-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Expense Records",
+    value: "0",
+    change: "-13%",
+    trend: "down",
+    icon: "📄",
+    color: "bg-red-500",
+    period: "vs. last month",
+  },
+  {
+    title: "Total Help Tickets",
+    value: "0",
+    change: "-31%",
+    trend: "down",
+    icon: "❓",
+    color: "bg-teal-500",
+    period: "vs. last month",
+  },
+];
+
+
+   useEffect(() => {
+       window.scrollTo(0, 0);
+       fetchUsers();
+       fetchItems();
+       fetchItemMs();
+       fetchingProduct();
+     }, []);
+   
+     const fetchUsers = async () => {
+       const res = await fetchDataFromApi("/users/get-all");
+       if (res && Array.isArray(res.users)) {
+         setUsers(res.users);
+       } else {
+         console.error("Unexpected API response:", res);
+         setUsers([]);
+       }
+     };
+     
+       const fetchItems = async () => {
+         const res = await fetchDataFromApi("/property/get-all");
+         if (res && Array.isArray(res.properties)) {
+         setItemM(res.properties);
+        }else {
+           console.error("Unexpected API response:", res);
+           setItemM([]);
+         }
+       };
+
+       const fetchItemMs = async () => {
+           const res = await fetchDataFromApi("/marketplace/get-all");
+           if (res && Array.isArray(res.marketplaces)) {
+           setItemP(res.marketplaces);
+          }else {
+             console.error("Unexpected API response:", res);
+             setItemP([]);
+           }
+         };
+
+    const fetchingProduct = () => {
+      fetchDataFromApi("/product/get-all")
+        .then((res) => {
+          setProducts(res);
+        })
+        .catch((error) => console.error("Error fetching Products:", error));
+    };
 
   const topData = {
     users: [
@@ -102,23 +156,35 @@ const Dashboard = ({ darkMode }) => {
         </div>
         <div className="stats-grid">
           {statsData.map((stat, index) => (
-            <div key={index} className="stat-card">
-              <div className="stat-content">
-                <div className="stat-info">
-                  <p className="stat-label">{stat.title}</p>
-                  <p className="stat-value">{stat.value}</p>
-                  <div className="stat-change">
-                    <span className={`trend-icon ${stat.trend}`}>{stat.trend === "up" ? "📈" : "📉"}</span>
-                    <span className={`change-value ${stat.trend}`}>{stat.change}</span>
-                    <span className="change-period">{stat.period}</span>
-                  </div>
-                </div>
-                <div className={`stat-icon ${stat.color}`}>
-                  <span className="icon-emoji">{stat.icon}</span>
+          <div key={index} className="stat-card">
+            <div className="stat-content">
+              <div className="stat-info">
+                <p className="stat-label">{stat.title}</p>
+                <p className="stat-value">
+                  {stat.key === "users"
+                    ? users.length
+                    : stat.key === "itemM"
+                    ? itemM.length
+                    : stat.key === "itemP"
+                    ? itemP.length
+                    : stat.value
+                    ? products.length
+                    : stat.value
+                    }
+                </p>
+                <div className="stat-change">
+                  <span className={`trend-icon ${stat.trend}`}>{stat.trend === "up" ? "📈" : "📉"}</span>
+                  <span className={`change-value ${stat.trend}`}>{stat.change}</span>
+                  <span className="change-period">{stat.period}</span>
                 </div>
               </div>
+              <div className={`stat-icon ${stat.color}`}>
+                <span className="icon-emoji">{stat.icon}</span>
+              </div>
             </div>
-          ))}
+          </div>
+        ))}
+
         </div>
       </div>
 
@@ -143,7 +209,7 @@ const Dashboard = ({ darkMode }) => {
                 <span>Name</span>
                 <span>Email</span>
               </div>
-              {topData.users.map((user, index) => (
+              {users.slice(0, 3).map((user, index)  => (
                 <div key={index} className="table-row">
                   <div className="user-info">
                     <div className={`user-avatar-small ${user.avatar}`}></div>
@@ -170,7 +236,7 @@ const Dashboard = ({ darkMode }) => {
                 <span>Product Name</span>
                 <span>Price</span>
               </div>
-              {topData.products.map((product, index) => (
+              {products.slice(0,3).map((product, index) => (
                 <div key={index} className="table-row">
                   <span>{product.name}</span>
                   <span className="price">{product.price}</span>

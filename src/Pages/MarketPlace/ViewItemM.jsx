@@ -14,10 +14,10 @@ const ViewitemM = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchUsers();
+    fetchItems();
   }, []);
 
-  const fetchUsers = async () => {
+  const fetchItems = async () => {
     const res = await fetchDataFromApi("/marketplace/get-all");
     if (res && Array.isArray(res.marketplaces)) {
     setUsers(res.marketplaces);

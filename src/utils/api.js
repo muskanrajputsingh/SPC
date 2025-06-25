@@ -11,16 +11,34 @@ export const fetchDataFromApi=async(url)=>{
     }
 }
 
+// export const postData = async (url, formData) => {
+//     try {
+//         console.log("Posting to:", BASE_URL + url, formData); // Debugging
+//         const { data } = await axios.post(BASE_URL + url, formData);
+//         return data;
+//     } catch (error) {
+//         console.error("Error in postData:", error.response?.data || error.message);
+//         throw error;
+//     }
+// };
+
 export const postData = async (url, formData) => {
-    try {
-        console.log("Posting to:", BASE_URL + url, formData); // Debugging
-        const { data } = await axios.post(BASE_URL + url, formData);
-        return data;
-    } catch (error) {
-        console.error("Error in postData:", error.response?.data || error.message);
-        throw error;
-    }
+  try {
+    const token = localStorage.getItem("token"); // ✅ get token from storage
+
+    const { data } = await axios.post(BASE_URL + url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ add token to header
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Error in postData:", error.response?.data || error.message);
+    throw error;
+  }
 };
+
 
 export const editData = async (url, updatedData) => {
     try {

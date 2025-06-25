@@ -7,9 +7,12 @@ import { PiSignOutFill } from "react-icons/pi";
 import { HiSpeakerphone } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
 import { IoSettings } from "react-icons/io5";
+import { GiClothes } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
+
 
 const Sidebar = ({ isOpen, toggleSidebar, darkMode }) => {
-  const location = useLocation()
+   const navigate = useNavigate();
    const [expandedMenus, setExpandedMenus] = useState({})
 
   const toggleMenu = (menuKey) => {
@@ -58,6 +61,19 @@ const Sidebar = ({ isOpen, toggleSidebar, darkMode }) => {
     { key: "associate", title: "Associate", icon: <FaStar />, link: "/associate" },
     { key: "announcement", title: "Announcement", icon: <HiSpeakerphone />, link: "/announcement" },
     { key: "enquiries", title: "Enquiries", icon: <FaEnvelope />, link: "/enquiries" },
+    
+    { 
+    key: "product", 
+     title: "Product", 
+     icon: <GiClothes />, 
+     hasSubmenu: true,
+      submenu: [
+        { title: "Add Product", link: "/addproduct" },
+        { title: "View Product", link: "/viewproduct" },
+      ],
+    },
+    
+
   ]
 
   const accountItems = [
@@ -129,6 +145,10 @@ const renderMenuItem = (item) => (
     </li>
   )
 
+ const handleSignOut = () => {
+    localStorage.removeItem("token");  
+    navigate("/login"); 
+  };
 
 
   return (
@@ -160,7 +180,7 @@ const renderMenuItem = (item) => (
         </div>
 
         <div className="sidebar-footer">
-          <button className="signout-btn">
+          <button className="signout-btn" onClick={handleSignOut}>
             <span className="menu-icon"><PiSignOutFill /></span>
             <span className="menu-text">Signout</span>
           </button>

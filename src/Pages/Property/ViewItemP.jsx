@@ -14,10 +14,10 @@ const ViewitemP = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchUsers();
+    fetchItems();
   }, []);
 
-  const fetchUsers = async () => {
+  const fetchItems = async () => {
     const res = await fetchDataFromApi("/property/get-all");
     if (res && Array.isArray(res.properties)) {
     setUsers(res.properties);

@@ -4,8 +4,11 @@ import { FaUser, FaLock, FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaCircleUser } from "react-icons/fa6";
 import { postData } from "../../utils/api";
+import { useContext } from "react"
+import { myContext } from "../../App"
 
 const Signup = () => {
+  const context = useContext(myContext)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,11 +36,20 @@ const Signup = () => {
       localStorage.setItem("token", response.token?.accessToken || "");  // safe fallback
       localStorage.setItem("user", JSON.stringify(response.user || {}));
 
-      alert("Signup successful!");
+      context.setAlertBox({
+      open: true,
+      msg: "SignUp successfully!",
+      error: false,
+    });
+    
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Signup failed:", error);
-      alert(error?.response?.data?.error || "Signup failed. Please try again.");
+      context.setAlertBox({
+      open: true,
+      msg: "SignUp Failed!",
+      error: true,
+    });
     }
   };
 
@@ -61,7 +73,7 @@ const Signup = () => {
               <input
                 type="text"
                 name="name"
-                placeholder="Your Name"
+                placeholder=" Name"
                 value={formData.name}
                 onChange={handleChange}
                 required

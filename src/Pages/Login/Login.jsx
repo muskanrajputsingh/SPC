@@ -4,9 +4,11 @@ import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { postData } from "../../utils/api";
 import { jwtDecode } from "jwt-decode";
-
+import { useContext } from "react"
+import { myContext } from "../../App"
 
 const Login = () => {
+  const context = useContext(myContext)
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -41,11 +43,19 @@ const Login = () => {
     console.log("User ID:", decoded?.id);
     console.log("User Email:", decoded?.email);
 
-    alert("Login successful!");
+    context.setAlertBox({
+      open: true,
+      msg: "Login successfully!",
+      error: false,
+    });
     window.location.href = "/dashboard";
   } catch (error) {
     console.error("Login failed:", error);
-    alert(error?.response?.data?.error || "Login failed. Please try again.");
+  context.setAlertBox({
+      open: true,
+      msg: "Login Failed!",
+      error: true,
+    });
   }
 };
 

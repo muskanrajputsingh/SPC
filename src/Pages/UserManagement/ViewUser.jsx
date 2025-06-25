@@ -3,8 +3,11 @@ import "./User.css";
 import { fetchDataFromApi, editData, deleteData } from "../../utils/api";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import { useContext } from "react"
+import { myContext } from "../../App"
 
 const ViewUser = () => {
+  const context = useContext(myContext)
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedRole, setSelectedRole] = useState("All");
@@ -77,7 +80,11 @@ const ViewUser = () => {
       setEditForm({});
     } catch (error) {
       console.error("Error updating user:", error);
-      alert("Failed to update user.");
+      context.setAlertBox({
+      open: true,
+      msg: "Failed to update user!",
+      error: true,
+    });
     }
   };
 
@@ -93,7 +100,11 @@ const ViewUser = () => {
         setUsers(users.filter((user) => user.id !== userId));
       } catch (error) {
         console.error("Delete error:", error);
-        alert("Failed to delete user.");
+         context.setAlertBox({
+      open: true,
+      msg: "Failed to delete user!",
+      error: true,
+    });
       }
     }
   };
