@@ -142,6 +142,11 @@ const ViewUser = () => {
         </select>
       </div>
 
+{filteredUsers.length === 0 ? (
+        <div className="no-products">
+          <p>No User found.</p>
+        </div>
+      ) : (
       <div className="table-container">
         <table className="user-table">
           <thead>
@@ -264,6 +269,7 @@ const ViewUser = () => {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 };

@@ -239,7 +239,7 @@ const Dashboard = ({ darkMode }) => {
               {products.slice(0,3).map((product, index) => (
                 <div key={index} className="table-row">
                   <span>{product.name}</span>
-                  <span className="price">{product.price}</span>
+                  <span className="price">₹{product.price}</span>
                 </div>
               ))}
               <button className="view-all-btn">View all →</button>

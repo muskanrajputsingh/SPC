@@ -37,12 +37,14 @@ const Signup = () => {
       localStorage.setItem("user", JSON.stringify(response.user || {}));
 
       context.setAlertBox({
-      open: true,
-      msg: "SignUp successfully!",
-      error: false,
-    });
-    
-      window.location.href = "/dashboard";
+        open: true,
+        msg: "SignUp successfully!",
+        error: false,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 2000);
     } catch (error) {
       console.error("Signup failed:", error);
       context.setAlertBox({

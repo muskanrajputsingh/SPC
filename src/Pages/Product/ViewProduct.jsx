@@ -178,10 +178,6 @@ const ViewProduct = () => {
       }
     };
   
-    // const filteredProducts = products.filter((product) => {
-    //   if (filterRating === "all") return true;
-    //   return product.ratings === Number.parseInt(filterRating);
-    // });
 
     const filteredProducts = products.filter((product) => {
   const ratingMatch =

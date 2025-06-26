@@ -43,12 +43,15 @@ const Login = () => {
     console.log("User ID:", decoded?.id);
     console.log("User Email:", decoded?.email);
 
-    context.setAlertBox({
+   context.setAlertBox({
       open: true,
       msg: "Login successfully!",
       error: false,
     });
-    window.location.href = "/dashboard";
+
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 2000);
   } catch (error) {
     console.error("Login failed:", error);
   context.setAlertBox({

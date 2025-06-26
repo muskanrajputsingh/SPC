@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { postData } from "../../utils/api"
-import "./AddItemM.css"
+import "../MarketPlace/AddItemM.css"
 
 const AddItemM = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    imageUrl: "",
+    imageUrl: [],
     category: "",
     createdById: "",
   })
@@ -15,7 +15,7 @@ const AddItemM = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
-  const categories = ["Cloth", "Makeup", "Shoes"]
+  const categories = ["All", "Cloth", "Makeup", "Shoes","Furniture","Electronic"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -24,13 +24,41 @@ const AddItemM = () => {
       [name]: value,
     }))
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
       }))
     }
+  }
+
+  const [tempInputs, setTempInputs] = useState({
+    image: "",
+  })
+
+  const addImage = () => {
+    if (tempInputs.image.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        imageUrl: [...prev.imageUrl, tempInputs.image.trim()],
+      }))
+      setTempInputs({ image: "" })
+    }
+  }
+
+  const removeImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: prev.imageUrl.filter((_, i) => i !== index),
+    }))
+  }
+
+  const handleTempInputChange = (e) => {
+    const { name, value } = e.target
+    setTempInputs((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
   const validateForm = () => {
@@ -48,27 +76,12 @@ const AddItemM = () => {
       newErrors.description = "Description must be at least 10 characters"
     }
 
-    if (!formData.imageUrl.trim()) {
-      newErrors.imageUrl = "Image URL is required"
-    } else if (!isValidUrl(formData.imageUrl)) {
-      newErrors.imageUrl = "Please enter a valid URL"
-    }
-
     if (!formData.category) {
       newErrors.category = "Category is required"
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }
-
-  const isValidUrl = (string) => {
-    try {
-      new URL(string)
-      return true
-    } catch (_) {
-      return false
-    }
   }
 
   const handleSubmit = async (e) => {
@@ -88,8 +101,8 @@ const AddItemM = () => {
     try {
       const payload = {
         ...formData,
-        imageUrl: [formData.imageUrl],
         createdById: user.id,
+        imageUrl: formData.imageUrl, 
       }
 
       const response = await postData("/marketplace/create", payload)
@@ -100,10 +113,11 @@ const AddItemM = () => {
       setFormData({
         name: "",
         description: "",
-        imageUrl: "",
+        imageUrl: [],
         category: "",
         createdById: "",
       })
+
       setTimeout(() => setSubmitSuccess(false), 3000)
     } catch (error) {
       console.error("Error creating item:", error)
@@ -117,8 +131,9 @@ const AddItemM = () => {
     setFormData({
       name: "",
       description: "",
-      imageUrl: "",
+      imageUrl: [],
       category: "",
+      createdById: "",
     })
     setErrors({})
     setSubmitSuccess(false)
@@ -179,31 +194,41 @@ const AddItemM = () => {
             {errors.category && <span className="error-text">{errors.category}</span>}
           </div>
 
-          {/* Image URL Field */}
-          <div className="input-group-full">
-            <label htmlFor="imageUrl" className="form-label">
-              Image URL <span className="required">*</span>
-            </label>
-            <input
-              type="url"
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleInputChange}
-              className={`form-input ${errors.imageUrl ? "input-error" : ""}`}
-              placeholder="https://example.com/image.jpg"
-            />
-            {errors.imageUrl && <span className="error-text">{errors.imageUrl}</span>}
-            {formData.imageUrl && isValidUrl(formData.imageUrl) && (
-              <div className="image-preview">
-                <img
-                  src={formData.imageUrl || "/placeholder.svg"}
-                  alt="Preview"
-                  className="preview-image"
-                  onError={(e) => {
-                    e.target.style.display = "none"
-                  }}
-                />
+          {/* Product Images */}
+          <div className="form-section">
+            <h3 className="section-title">Product Images</h3>
+            <div className="input-with-add">
+              <input
+                type="url"
+                name="image"
+                value={tempInputs.image}
+                onChange={handleTempInputChange}
+                placeholder="Enter image URL"
+                className="form-input"
+              />
+              <button type="button" onClick={addImage} className="add-btn">
+                Add
+              </button>
+            </div>
+
+            {formData.imageUrl.length > 0 && (
+              <div className="preview-container">
+                <h4 className="preview-title">Image Preview</h4>
+                <div className="preview-grid">
+                  {formData.imageUrl.map((image, index) => (
+                    <div key={index} className="preview-item image-preview">
+                      <button
+                        type="button"
+                        className="delete-preview-btn"
+                        onClick={() => removeImage(index)}
+                        title="Remove image"
+                      >
+                        ×
+                      </button>
+                      <img src={image || "/placeholder.svg"} alt={`Product ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
