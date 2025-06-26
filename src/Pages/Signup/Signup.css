@@ -203,13 +203,11 @@
   }
   
   @media (max-width: 480px) {
-    .company-logo {
-      width: 60px;
-      height: 60px;
+    .login-title {
+      font-size: 1.2rem;
     }
-  
-    .logo-container {
-      margin-bottom: 1rem;
+    .login-form-section {
+      padding: 1rem 0.5rem;
     }
   }
   

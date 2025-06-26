@@ -12,3 +12,21 @@
   .login-btn:hover {
     background: linear-gradient(90deg, #a78bfa 0%, #7c3aed 100%);
   }
+
+.sidebar-toggle-mobile {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #7c3aed;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+@media (max-width: 768px) {
+  .sidebar-toggle-mobile {
+    display: block;
+  }
+  .sidebar-toggle {
+    display: none;
+  }
+}

@@ -41,7 +41,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.5);
+    /* background: rgba(0,0,0,0.5); */
     z-index: 999;
 }
 
@@ -329,5 +329,37 @@
 .menu-list {
     padding-right: 0;
     margin-right: 0;
+}
+
+.sidebar-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #7c3aed;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 0.5rem;
+    transition: color 0.2s;
+}
+
+.sidebar.dark .sidebar-close-btn {
+    color: #a855f7;
+}
+
+@media (max-width: 768px) {
+    .sidebar-close-btn {
+        display: block;
+    }
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        /* background: rgba(0,0,0,0.5); */
+        z-index: 999;
+    }
 }
   

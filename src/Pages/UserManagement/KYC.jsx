@@ -111,112 +111,115 @@ const KYC = () => {
   )
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h1 style={styles.title}>KYC Document Upload</h1>
-        <p style={styles.subtitle}>Please upload all required documents for verification</p>
+    <div className="kyc-container" style={styles.container}>
+      <div className="kyc-header" style={styles.header}>
+        <h1 className="kyc-title" style={styles.title}>KYC Document Upload</h1>
+        <p className="kyc-subtitle" style={styles.subtitle}>Please upload all required documents for verification</p>
       </div>
-
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} className="kyc-form" style={styles.form}>
         {/* Personal Information */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Personal Information</h2>
+        <div className="kyc-section" style={styles.section}>
+          <h2 className="kyc-sectionTitle" style={styles.sectionTitle}>Personal Information</h2>
           <div style={styles.row}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                Full Name <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                Full Name <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 required
               />
             </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                Date of Birth <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                Date of Birth <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="date"
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 required
               />
             </div>
           </div>
-
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>
-              Address <span style={styles.required}>*</span>
+          <div className="kyc-inputGroup" style={styles.inputGroup}>
+            <label className="kyc-label" style={styles.label}>
+              Address <span className="kyc-required" style={styles.required}>*</span>
             </label>
             <textarea
               name="address"
               value={formData.address}
               onChange={handleInputChange}
+              className="kyc-textarea"
               style={styles.textarea}
               rows="3"
               required
             />
           </div>
-
           <div style={styles.row}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                Phone Number <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                Phone Number <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="tel"
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 required
               />
             </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                Email <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                Email <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 required
               />
             </div>
           </div>
-
           <div style={styles.row}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                Aadhar Number <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                Aadhar Number <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="text"
                 name="aadharNumber"
                 value={formData.aadharNumber}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 placeholder="XXXX-XXXX-XXXX"
                 required
               />
             </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                PAN Number <span style={styles.required}>*</span>
+            <div className="kyc-inputGroup" style={styles.inputGroup}>
+              <label className="kyc-label" style={styles.label}>
+                PAN Number <span className="kyc-required" style={styles.required}>*</span>
               </label>
               <input
                 type="text"
                 name="panNumber"
                 value={formData.panNumber}
                 onChange={handleInputChange}
+                className="kyc-input"
                 style={styles.input}
                 placeholder="ABCDE1234F"
                 required
@@ -224,11 +227,9 @@ const KYC = () => {
             </div>
           </div>
         </div>
-
         {/* Document Uploads */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Document Uploads</h2>
-
+        <div className="kyc-section" style={styles.section}>
+          <h2 className="kyc-sectionTitle" style={styles.sectionTitle}>Document Uploads</h2>
           <div style={styles.documentsGrid}>
             <FileUploadField name="aadharFront" label="Aadhar Card (Front)" accept="image/*,.pdf" required={true} />
             <FileUploadField name="aadharBack" label="Aadhar Card (Back)" accept="image/*,.pdf" required={true} />
@@ -239,11 +240,11 @@ const KYC = () => {
             <FileUploadField name="selfie" label="Selfie with ID" accept="image/*" required={true} />
           </div>
         </div>
-
-        <div style={styles.submitSection}>
+        <div className="kyc-submit-section" style={styles.submitSection}>
           <button
             type="submit"
             disabled={isSubmitting}
+            className="kyc-submit-btn"
             style={{
               ...styles.submitButton,
               ...(isSubmitting ? styles.submitButtonDisabled : {}),
@@ -260,7 +261,6 @@ const KYC = () => {
           </button>
         </div>
       </form>
-
       <style jsx>{`
         .file-upload-field {
           margin-bottom: 20px;

@@ -6,6 +6,9 @@ const Header = ({ toggleSidebar, toggleDarkMode, darkMode }) => {
   return (
     <header className="header">
       <div className="header-left">
+        <button className="sidebar-toggle-mobile" onClick={toggleSidebar} aria-label="Open Sidebar">
+          <span>&#9776;</span>
+        </button>
         <button onClick={toggleSidebar} className="sidebar-toggle">
           ☰
         </button>

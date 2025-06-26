@@ -10,12 +10,19 @@ const ViewitemM = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   const category = ["All", "Cloth", "Makeup", "Shoes","Furniture","Electronic"];
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchItems();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchItems = async () => {
@@ -126,43 +133,70 @@ const ViewitemM = () => {
           <p>No Item found.</p>
         </div>
       ) : (
-   <div className="table-container">
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Serial</th>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredItem.map((user, index) => (
-            <tr key={user.id}>
-              <td>{index + 1}</td>
-              <td>{user.name}</td>
-              <td>
-                {user.imageUrl?.[0] ? (
-                  <img src={user.imageUrl[0]} alt={user.name} width="50" height="50" />
-                ) : (
-                  "No image"
-                )}
-              </td>
-              <td>{user.description}</td>
-              <td>{user.category}</td>
-              <td>
-                <div className="action-buttons">
-                <button className="edit-btn" onClick={() => handleEdit(user)}><MdEdit /></button>
-                <button className="delete-btn" onClick={() => handleDelete(user.id)}><MdDelete /></button>
+        isMobile ? (
+          <div className="user-list">
+            {filteredItem.map((user) => (
+              <div className="user-card" key={user.id}>
+                <div>
+                  {user.imageUrl?.[0] ? (
+                    <img src={user.imageUrl[0]} alt={user.name} />
+                  ) : (
+                    <div className="no-image">No image</div>
+                  )}
                 </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
+                <div style={{ flex: 1 }}>
+                  <div className="user-name"><strong>{user.name}</strong></div>
+                  <div className="user-description">{user.description}</div>
+                  <div className="user-category">{user.category}</div>
+                  <div className="actions">
+                    <div className="action-buttons">
+                      <button className="edit-btn" onClick={() => handleEdit(user)}><MdEdit /></button>
+                      <button className="delete-btn" onClick={() => handleDelete(user.id)}><MdDelete /></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="table-container">
+            <table className="user-table">
+              <thead>
+                <tr>
+                  <th>Serial</th>
+                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredItem.map((user, index) => (
+                  <tr key={user.id}>
+                    <td>{index + 1}</td>
+                    <td>{user.name}</td>
+                    <td>
+                      {user.imageUrl?.[0] ? (
+                        <img src={user.imageUrl[0]} alt={user.name} width="50" height="50" />
+                      ) : (
+                        "No image"
+                      )}
+                    </td>
+                    <td>{user.description}</td>
+                    <td>{user.category}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button className="edit-btn" onClick={() => handleEdit(user)}><MdEdit /></button>
+                        <button className="delete-btn" onClick={() => handleDelete(user.id)}><MdDelete /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
 
       {isModalOpen && (

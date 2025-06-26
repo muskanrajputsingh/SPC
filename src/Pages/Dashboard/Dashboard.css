@@ -472,17 +472,24 @@
     .main-content.sidebar-open {
       margin-left: 0;
     }
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .dashboard-content {
+      padding: 0.5rem;
+    }
+  }
   
+  @media (max-width: 480px) {
     .stats-grid {
       grid-template-columns: 1fr;
     }
-  
-    .top-data-grid {
-      grid-template-columns: 1fr;
+    .dashboard-title {
+      font-size: 1.2rem;
     }
-  
     .dashboard-content {
-      padding: 1rem;
+      padding: 0.25rem;
     }
   }
   

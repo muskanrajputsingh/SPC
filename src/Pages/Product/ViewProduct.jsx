@@ -13,7 +13,7 @@ const ViewProduct = () => {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [filterRating, setFilterRating] = useState("all")
   const [filterCategory, setFilterCategory] = useState("all");
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
    const [editFormData, setEditFormData] = useState({
       name: "",
@@ -178,6 +178,11 @@ const ViewProduct = () => {
       }
     };
   
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth <= 600);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const filteredProducts = products.filter((product) => {
   const ratingMatch =
@@ -190,15 +195,12 @@ const ViewProduct = () => {
   return ratingMatch && categoryMatch;
 });
 
-
-
   return (
     <div className="product-container">
       <div className="product-header">
         <h1>View Products</h1>
         <div className="product-stats">Total Products: {products.length}</div>
       </div>
-
 
     <div className="filter-container">
       <div className="filter-section">
@@ -233,88 +235,133 @@ const ViewProduct = () => {
           <p>No products found.</p>
         </div>
       ) : (
-        <div className="table-container">
-          <table className="product-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Rating</th>
-                <th>Features</th>
-                <th>Category</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map((product) => (
-                <tr key={product.id}>
-                  <td>
-                    <div className="product-image-cell">
-                      {product.images.length > 0 ? (
-                        <img src={product.images?.[0] || "/placeholder.svg"} alt={product.name} />
-                      ) : (
-                        <div className="no-image">No Image</div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="product-name">
-                      <strong>{product.name}</strong>
-                      <p className="product-description">{product.description}</p>
-                    </div>
-                  </td>
-                  <td>
-                    <span className="price-badge">₹{product.price}</span>
-                  </td>
-                  <td>
-                    {product.discount > 0 ? (
-                      <span className="discount-badge">{product.discount}%</span>
-                    ) : (
-                      <span className="no-discount">No Discount</span>
+        isMobile ? (
+          <div className="product-list">
+            {filteredProducts.map((product) => (
+              <div className="product-card" key={product.id}>
+                <div className="product-image-cell">
+                  {product.images.length > 0 ? (
+                    <img src={product.images?.[0] || "/placeholder.svg"} alt={product.name} />
+                  ) : (
+                    <div className="no-image">No Image</div>
+                  )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div className="product-name"><strong>{product.name}</strong></div>
+                  <div className="product-description">{product.description}</div>
+                  <span className="price-badge">₹{product.price}</span>
+                  {product.discount > 0 ? (
+                    <span className="discount-badge">{product.discount}%</span>
+                  ) : (
+                    <span className="no-discount">No Discount</span>
+                  )}
+                  <div className="rating-display">
+                    {"★".repeat(product.ratings)}{"☆".repeat(5 - product.ratings)}
+                  </div>
+                  <div className="features-preview">
+                    {product.features.slice(0, 2).map((feature, index) => (
+                      <span key={index} className="feature-tag">{feature}</span>
+                    ))}
+                    {product.features.length > 2 && (
+                      <span className="more-features">+{product.features.length - 2} more</span>
                     )}
-                  </td>
-                  <td>
-                    <div className="rating-display">
-                      {"★".repeat(product.ratings)}
-                      {"☆".repeat(5 - product.ratings)}
-                      {/* <span className="rating-number">({product.ratings}/5)</span> */}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="features-preview">
-                      {product.features.slice(0, 2).map((feature, index) => (
-                        <span key={index} className="feature-tag">
-                          {feature}
-                        </span>
-                      ))}
-                      {product.features.length > 2 && (
-                        <span className="more-features">+{product.features.length - 2} more</span>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                     <strong>{product.category}</strong>
-                  </td>
-                  <td className="actions">
+                  </div>
+                  <div><strong>{product.category}</strong></div>
+                  <div className="actions">
                     <div className="action-buttons">
-                      <button onClick={() => handleViewDetails(product)} className="view-btn">
-                        View
-                      </button>
-                      <button onClick={() => handleEdit(product)} className="edit-btn">
-                        Edit
-                      </button>
-                      <button onClick={() => handleDelete(product.id)} className="delete-btn">
-                        Delete
-                      </button>
+                      <button onClick={() => handleViewDetails(product)} className="view-btn">View</button>
+                      <button onClick={() => handleEdit(product)} className="edit-btn">Edit</button>
+                      <button onClick={() => handleDelete(product.id)} className="delete-btn">Delete</button>
                     </div>
-                  </td>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="table-container">
+            <table className="product-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Rating</th>
+                  <th>Features</th>
+                  <th>Category</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredProducts.map((product) => (
+                  <tr key={product.id}>
+                    <td>
+                      <div className="product-image-cell">
+                        {product.images.length > 0 ? (
+                          <img src={product.images?.[0] || "/placeholder.svg"} alt={product.name} />
+                        ) : (
+                          <div className="no-image">No Image</div>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="product-name">
+                        <strong>{product.name}</strong>
+                        <p className="product-description">{product.description}</p>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="price-badge">₹{product.price}</span>
+                    </td>
+                    <td>
+                      {product.discount > 0 ? (
+                        <span className="discount-badge">{product.discount}%</span>
+                      ) : (
+                        <span className="no-discount">No Discount</span>
+                      )}
+                    </td>
+                    <td>
+                      <div className="rating-display">
+                        {"★".repeat(product.ratings)}
+                        {"☆".repeat(5 - product.ratings)}
+                        {/* <span className="rating-number">({product.ratings}/5)</span> */}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="features-preview">
+                        {product.features.slice(0, 2).map((feature, index) => (
+                          <span key={index} className="feature-tag">
+                            {feature}
+                          </span>
+                        ))}
+                        {product.features.length > 2 && (
+                          <span className="more-features">+{product.features.length - 2} more</span>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                       <strong>{product.category}</strong>
+                    </td>
+                    <td className="actions">
+                      <div className="action-buttons">
+                        <button onClick={() => handleViewDetails(product)} className="view-btn">
+                          View
+                        </button>
+                        <button onClick={() => handleEdit(product)} className="edit-btn">
+                          Edit
+                        </button>
+                        <button onClick={() => handleDelete(product.id)} className="delete-btn">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
 
      {/* Edit Modal */}

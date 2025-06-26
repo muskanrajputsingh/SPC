@@ -331,6 +331,44 @@
     width: 100%;
     justify-content: center;
   }
+
+  .user-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .table-container {
+    overflow-x: auto;
+  }
+  .user-table th,
+  .user-table td {
+    padding: 10px 6px;
+    font-size: 0.95rem;
+  }
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .edit-btn,
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 8px 0;
+  }
+  .submit-button,
+  .reset-button {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 12px 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -345,8 +383,107 @@
   .add-item-subtitle {
     font-size: 0.9rem;
   }
+
+  .user-header h1 {
+    font-size: 1.1rem !important;
+  }
+  .user-stats {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
 }
 
+@media (max-width: 600px) {
+  .user-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+  }
+  .table-container {
+    display: none;
+  }
+  .user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  .user-card, .product-card {
+    background: #fff;
+    color: #22223b;
+  }
+  .dark .user-card, .dark .product-card {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+  .user-card img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .user-card .user-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .user-card .user-description {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+  }
+  .user-card .user-category {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .user-card .actions {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  .user-card .action-buttons {
+    flex-direction: row;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .user-card .edit-btn,
+  .user-card .delete-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+  .modal-content {
+    width: 98vw;
+    min-width: 0;
+    padding: 1rem;
+  }
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+  .modal-body {
+    padding: 0.5rem 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .user-header h1 {
+    font-size: 1rem !important;
+  }
+  .user-stats {
+    font-size: 0.8rem;
+    padding: 4px 6px;
+  }
+  .modal-content {
+    padding: 0.5rem;
+  }
+}
 
 /* //model  */
 

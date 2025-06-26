@@ -153,7 +153,7 @@ const renderMenuItem = (item) => (
 
   return (
     <>
-      {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
+      {isOpen && <div className="sidebar-overlay show" onClick={toggleSidebar}></div>}
 
       <div className={`sidebar ${isOpen ? "open" : "closed"} ${darkMode ? "dark" : ""}`}>
         <div className="sidebar-header">
@@ -161,6 +161,9 @@ const renderMenuItem = (item) => (
             <div className="logo-icon"><img src="SPC.png" alt="SPC Logo" /></div>
             <span className="logo-text">SPC</span>
           </div>
+          <button className="sidebar-close-btn" onClick={toggleSidebar} aria-label="Close Sidebar">
+            &times;
+          </button>
         </div>
 
         <div className="sidebar-content">
