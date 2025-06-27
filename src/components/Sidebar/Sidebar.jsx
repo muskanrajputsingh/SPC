@@ -58,7 +58,12 @@ const Sidebar = ({ isOpen, toggleSidebar, darkMode }) => {
         { title: "View Item", link: "/viewitemP" },
       ],
     },
-    { key: "associate", title: "Associate", icon: <FaStar />, link: "/associate" },
+    { key: "associate", title: "Associate", icon: <FaStar />, 
+      hasSubmenu: true,
+      submenu: [
+        { title: "Add Associate", link: "/addAssociate" },
+      ]
+    },
     { key: "announcement", title: "Announcement", icon: <HiSpeakerphone />, link: "/announcement" },
     { key: "enquiries", title: "Enquiries", icon: <FaEnvelope />, link: "/enquiries" },
     
@@ -150,10 +155,16 @@ const renderMenuItem = (item) => (
     navigate("/login"); 
   };
 
+  // Only close sidebar from overlay on small screens
+  const handleOverlayClick = () => {
+    if (window.innerWidth <= 768) {
+      toggleSidebar();
+    }
+  };
 
   return (
     <>
-      {isOpen && <div className="sidebar-overlay show" onClick={toggleSidebar}></div>}
+      {isOpen && <div className="sidebar-overlay show" onClick={handleOverlayClick}></div>}
 
       <div className={`sidebar ${isOpen ? "open" : "closed"} ${darkMode ? "dark" : ""}`}>
         <div className="sidebar-header">

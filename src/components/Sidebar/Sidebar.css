@@ -32,6 +32,7 @@
 
 .sidebar-overlay {
     display: none;
+    pointer-events: none;
 }
 
 .sidebar-overlay.show {
@@ -286,6 +287,17 @@
     .sidebar {
         width: 260px;
     }
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        pointer-events: auto;
+    }
 }
 
 @media (max-width: 640px) {
@@ -350,16 +362,6 @@
 @media (max-width: 768px) {
     .sidebar-close-btn {
         display: block;
-    }
-    .sidebar-overlay.show {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        /* background: rgba(0,0,0,0.5); */
-        z-index: 999;
     }
 }
   

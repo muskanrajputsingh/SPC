@@ -248,7 +248,7 @@ const ViewProduct = () => {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div className="product-name"><strong>{product.name}</strong></div>
-                  <div className="product-description">{product.description}</div>
+                  <div className="product-description description-clamp">{product.description}</div>
                   <span className="price-badge">₹{product.price}</span>
                   {product.discount > 0 ? (
                     <span className="discount-badge">{product.discount}%</span>
@@ -308,7 +308,7 @@ const ViewProduct = () => {
                     <td>
                       <div className="product-name">
                         <strong>{product.name}</strong>
-                        <p className="product-description">{product.description}</p>
+                        <p className="product-description description-clamp">{product.description}</p>
                       </div>
                     </td>
                     <td>

@@ -599,3 +599,11 @@
   background-color:red;
   cursor: pointer;
 }
+
+.description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Show only 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

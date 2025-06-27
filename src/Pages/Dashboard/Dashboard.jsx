@@ -131,12 +131,6 @@ const Dashboard = ({ darkMode }) => {
     };
 
   const topData = {
-    users: [
-      { name: "Muskan Singh", email: "muskan@gmail.com", avatar: "bg-purple-500" },
-      { name: "Khushi Singh", email: "khushi@gmail.com", avatar: "bg-green-500" },
-      { name: "Priya Gupta", email: "priya@gmail.com", avatar: "bg-red-500" },
-    ],
-    products: [{ name: "Headphone", price: "₹ 5000" }],
     investors: [{ name: "developer", amount: "₹ 60000" }],
     employees: [{ name: "Raman Singh", position: "Position", salary: "₹ 80000" }],
   }

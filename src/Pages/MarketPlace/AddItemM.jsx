@@ -84,6 +84,8 @@ const AddItemM = () => {
     return Object.keys(newErrors).length === 0
   }
 
+// submit
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 

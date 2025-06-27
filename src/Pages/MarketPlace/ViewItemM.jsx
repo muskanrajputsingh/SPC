@@ -146,7 +146,7 @@ const ViewitemM = () => {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div className="user-name"><strong>{user.name}</strong></div>
-                  <div className="user-description">{user.description}</div>
+                  <div className="user-description description-clamp">{user.description}</div>
                   <div className="user-category">{user.category}</div>
                   <div className="actions">
                     <div className="action-buttons">
@@ -183,7 +183,11 @@ const ViewitemM = () => {
                         "No image"
                       )}
                     </td>
-                    <td>{user.description}</td>
+
+                    <td><div className="description-clamp">
+                      {user.description}
+                    </div></td>
+
                     <td>{user.category}</td>
                     <td>
                       <div className="action-buttons">

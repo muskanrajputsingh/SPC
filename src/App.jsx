@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import AddProduct from "./Pages/Product/AddProduct";
 import ViewProduct from "./Pages/Product/ViewProduct";
+import AddAssociate from "./Pages/Associate/AddAssociate";
 
 // Global Context
 export const myContext = createContext();
@@ -44,6 +45,7 @@ function AppLayout({ darkMode, toggleDarkMode, sidebarOpen, toggleSidebar }) {
           <Route path="/viewitemP" element={<ViewItemP />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/viewproduct" element={<ViewProduct />} />
+          <Route path="/addAssociate" element={<AddAssociate/>} />
         </Routes>
       </div>
     </>
@@ -55,14 +57,18 @@ function App() {
     const stored = localStorage.getItem('darkMode');
     return stored ? JSON.parse(stored) : false;
   });
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 768);
 
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
