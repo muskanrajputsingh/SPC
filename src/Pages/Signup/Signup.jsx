@@ -30,10 +30,10 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await postData("/users/create-user", formData); // use register not create-user
+      const response = await postData("/users/create-user", formData); 
 
-      // Save token to localStorage
-      localStorage.setItem("token", response.token?.accessToken || "");  // safe fallback
+      // Saving token to localStorage
+      localStorage.setItem("token", response.token?.accessToken || "");  
       localStorage.setItem("user", JSON.stringify(response.user || {}));
 
       context.setAlertBox({

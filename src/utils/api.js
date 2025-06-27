@@ -11,17 +11,6 @@ export const fetchDataFromApi=async(url)=>{
     }
 }
 
-// export const postData = async (url, formData) => {
-//     try {
-//         console.log("Posting to:", BASE_URL + url, formData); // Debugging
-//         const { data } = await axios.post(BASE_URL + url, formData);
-//         return data;
-//     } catch (error) {
-//         console.error("Error in postData:", error.response?.data || error.message);
-//         throw error;
-//     }
-// };
-
 export const postData = async (url, formData) => {
   try {
     const token = localStorage.getItem("token"); // ✅ get token from storage
@@ -62,3 +51,25 @@ export const deleteData = async (url) => {
     }
   };
   
+
+  //associate
+ export const promoteUserToAssociate = async (userId, level, percent) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const { data } = await axios.patch(
+      `${BASE_URL}/users/promote-to-associate/${userId}`,
+      { level, percent }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error promoting user:", error.response?.data || error.message);
+    throw error;
+  }
+};
