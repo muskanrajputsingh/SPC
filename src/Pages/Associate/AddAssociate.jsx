@@ -47,31 +47,70 @@ const AddAssociate = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+//   const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   if (!validateForm()) return;
 
-  setIsSubmitting(true);
+//   setIsSubmitting(true);
 
-  try {
-    await promoteUserToAssociate(
-      formData.users,
-      parseInt(formData.level),
-      parseInt(formData.percent)
-    );
+//   try {
+//     await promoteUserToAssociate(
+//       formData.users,
+//       parseInt(formData.level),
+//       parseInt(formData.percent)
+//     );
 
-    setSubmitSuccess(true);
-    setFormData({ users: "", level: "", percent: "" });
+//     setSubmitSuccess(true);
+//     setFormData({ users: "", level: "", percent: "" });
 
-    setTimeout(() => setSubmitSuccess(false), 3000);
-  } catch (error) {
-    console.error("Error promoting user:", error);
-    alert("Failed to promote user");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+//     setTimeout(() => setSubmitSuccess(false), 3000);
+//   } catch (error) {
+//     console.error("Error promoting user:", error);
+//     alert("Failed to promote user");
+//   } finally {
+//     setIsSubmitting(false);
+//   }
+// };
 
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsSubmitting(true);
+    try {
+      await promoteUserToAssociate(
+        formData.users,
+        parseInt(formData.level),
+        parseInt(formData.percent)
+      );
+
+      await fetchDataFromApi('/products/update-referral', {
+        method: 'POST',
+        body: JSON.stringify({
+          referralBy: formData.users,
+          referralPercentage: parseInt(formData.percent),
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      await fetchDataFromApi('/referral/create-or-update', {
+        method: 'POST',
+        body: JSON.stringify({
+          associateId: formData.users,
+          percent: parseInt(formData.percent),
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      setSubmitSuccess(true);
+      setFormData({ users: '', level: '', percent: '' });
+      setTimeout(() => setSubmitSuccess(false), 3000);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to process associate referral data.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleReset = () => {
     setFormData({ users: "", level: "", percent: "" });

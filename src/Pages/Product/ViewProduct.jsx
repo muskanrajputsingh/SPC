@@ -14,7 +14,7 @@ const ViewProduct = () => {
   const [filterRating, setFilterRating] = useState("all")
   const [filterCategory, setFilterCategory] = useState("all");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
-
+  
    const [editFormData, setEditFormData] = useState({
       name: "",
       description: "",
@@ -136,8 +136,12 @@ const ViewProduct = () => {
   
     const handleEditSubmit = (e) => {
       e.preventDefault();
-      const updatedData = { ...editFormData, ratings: ratingValue };
-  
+      const updatedData = { 
+        ...editFormData, 
+        ratings: ratingValue,
+        discount:parseInt(editFormData.referralPercentage) || 0,
+      };
+
       editData(`/product/update-product/${selectedProduct.id}`, updatedData)
         .then(() => {
           context.setAlertBox({
@@ -177,6 +181,7 @@ const ViewProduct = () => {
           });
       }
     };
+    
   
     useEffect(() => {
       const handleResize = () => setIsMobile(window.innerWidth <= 600);
@@ -184,7 +189,7 @@ const ViewProduct = () => {
       return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const filteredProducts = products.filter((product) => {
+  const filteredProducts = products.filter((product) => {
   const ratingMatch =
     filterRating === "all" ||
     product.ratings === Number.parseInt(filterRating);
@@ -381,7 +386,7 @@ const ViewProduct = () => {
               rating={ratingValue}
               setRating={setRatingValue}
               setFormRating={(val) =>
-                setEditFormData((prev) => ({ ...prev, ratings: val }))
+              setEditFormData((prev) => ({ ...prev, ratings: val }))
               }
             />
           )}
@@ -454,8 +459,7 @@ const ViewProduct = () => {
               </div>
             </div>
             )}
-
-
+            
               {selectedProduct.insideBox.length > 0 && (
                 <div className="detail-section">
                   <h4>Inside Box</h4>

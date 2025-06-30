@@ -10,7 +10,7 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
-    description: "",
+    description:"",
     images: [],
     price: "",
     discount: "",
@@ -22,6 +22,7 @@ const AddProduct = () => {
     sellerId:"",
   })
 
+
   const [tempInputs, setTempInputs] = useState({
     image: "",
     feature: "",
@@ -30,12 +31,14 @@ const AddProduct = () => {
   })
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "discount" || name === "ratings" ? Number.parseInt(value) || 0 : value,
-    }))
-  }
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: name === "discount" || name === "ratings" || name === "referralPercentage"
+      ? parseInt(value) || 0
+      : value,
+  }));
+};
 
   const handleTempInputChange = (e) => {
     const { name, value } = e.target
@@ -84,7 +87,6 @@ const AddProduct = () => {
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // Debugging logs (optional)
   console.log("USER FROM LOCALSTORAGE:", user);
 
   if (!user?.id || typeof user.id !== "string") {
@@ -95,7 +97,7 @@ const AddProduct = () => {
   const productData = {
     ...formData,
     sellerId: user.id,
-    createdById: user.id, // if needed
+    createdById: user.id, 
   };
 console.log(user.id);
   postData("/product/create-product", productData).then((res) => {
@@ -104,7 +106,7 @@ console.log(user.id);
       msg: "Product added successfully!",
       error: false,
     });
-
+ console.log("user.id =>", user.id);
     setFormData({
       id: "",
       name: "",
@@ -125,8 +127,6 @@ console.log(user.id);
     }, 1000);
   });
 };
-
-
 
   return (
     <div className="product-container">
@@ -211,8 +211,7 @@ console.log(user.id);
                 className="form-input"
                 required
               />
-            </div>
-
+            </div>       
           </div>
 
           {/* Images Section */}
